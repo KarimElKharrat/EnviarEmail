@@ -7,18 +7,18 @@ import org.apache.commons.mail.SimpleEmail;
 
 public class GestionarEmail {
 	
-	public static void enviarEmail(String host, String nombre, String password, String emailFrom, 
-			String emailTo, String asunto, String mensaje, int puerto, boolean ssl) throws EmailException {
+	public static void enviarEmail(EnviarEmailModel model) throws EmailException {
+
 		Email email = new SimpleEmail();
 		
-		email.setHostName(host);
-		email.setSmtpPort(puerto);
-		email.setAuthenticator(new DefaultAuthenticator(nombre, password));
-		email.setSSLOnConnect(ssl);
-		email.setFrom(emailFrom);
-		email.setSubject(asunto);
-		email.setMsg(mensaje);
-		email.addTo(emailTo);
+		email.setHostName(model.getIp());
+		email.setSmtpPort(model.getPuerto());
+		email.setAuthenticator(new DefaultAuthenticator(model.getRemitente(), model.getPassword()));
+		email.setSSLOnConnect(model.isSsl());
+		email.setFrom(model.getRemitente());
+		email.setSubject(model.getAsunto());
+		email.setMsg(model.getMensaje());
+		email.addTo(model.getDestinatario());
 		email.send();
 	}
 	
