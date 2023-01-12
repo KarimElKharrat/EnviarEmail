@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -126,17 +127,21 @@ public class EnviarEmailController implements Initializable {
 		
 		enviarButton.disableProperty().bind(envio.runningProperty());
 		
-		enviarButton.disableProperty().addListener((o, ov, nv) -> {
-			if(nv)
-				enviarButton.contentDisplayProperty().set(ContentDisplay.GRAPHIC_ONLY);
-			else
-				enviarButton.contentDisplayProperty().set(ContentDisplay.TEXT_ONLY);
-		});
+		enviarButton.disableProperty().addListener(this::onDisabledChanged);
 		
 		new Thread(envio).start();
 			
 	}
 	
+	private void onDisabledChanged(ObservableValue<? extends Boolean> o, Boolean ov, Boolean nv) {
+		
+		if(nv)
+			enviarButton.contentDisplayProperty().set(ContentDisplay.GRAPHIC_ONLY);
+		else
+			enviarButton.contentDisplayProperty().set(ContentDisplay.TEXT_ONLY);
+		
+	}
+
 	@FXML
 	private void onVaciarAction(ActionEvent e) {
 		ipText.setText("");
