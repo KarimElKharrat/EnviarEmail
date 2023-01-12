@@ -95,11 +95,8 @@ public class EnviarEmailController implements Initializable {
 
 			@Override
 			protected Void call() throws Exception {
-//					updateMessage("Hacionde no se que ... (" + porcentaje + "%)");
-//					updateProgress(i, TOTAL);
 				GestionarEmail.enviarEmail(model.get());
 				updateMessage("Proceso completado");
-				
 				return null;
 			}
 			
@@ -122,7 +119,7 @@ public class EnviarEmailController implements Initializable {
 		task.setOnCancelled(l -> {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(EnviarEmailApp.primaryStage);
-			alert.setTitle("Segundo plano");
+			alert.setTitle("Tarea cancelada");
 			alert.setHeaderText("Tarea cancelada");
 			alert.show();
 		});
