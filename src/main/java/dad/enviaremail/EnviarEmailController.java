@@ -28,7 +28,7 @@ public class EnviarEmailController implements Initializable {
 	
 	// logic
 	
-	private Task<Void> task;
+	private Task<Void> envio;
 	
 	// model
 	
@@ -91,7 +91,7 @@ public class EnviarEmailController implements Initializable {
 	@FXML
 	private void onEnviarAction(ActionEvent e) {
 		
-		task = new Task<Void>() {
+		envio = new Task<Void>() {
 
 			@Override
 			protected Void call() throws Exception {
@@ -101,14 +101,14 @@ public class EnviarEmailController implements Initializable {
 			}
 			
 		};
-		task.setOnSucceeded(l -> {
+		envio.setOnSucceeded(l -> {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.initOwner(EnviarEmailApp.primaryStage);
 			alert.setTitle("Mensaje enviado");
 			alert.setHeaderText("Mensaje enviado con éxito a \"" + model.get().getDestinatario() + "\".");
 			alert.showAndWait();
 		});
-		task.setOnFailed(l -> {
+		envio.setOnFailed(l -> {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(EnviarEmailApp.primaryStage);
 			alert.setTitle("Error");
@@ -116,7 +116,7 @@ public class EnviarEmailController implements Initializable {
 			alert.setContentText(l.getSource().getException().getMessage());
 			alert.showAndWait();
 		});
-		task.setOnCancelled(l -> {
+		envio.setOnCancelled(l -> {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(EnviarEmailApp.primaryStage);
 			alert.setTitle("Tarea cancelada");
@@ -124,7 +124,7 @@ public class EnviarEmailController implements Initializable {
 			alert.show();
 		});
 		
-		enviarButton.disableProperty().bind(task.runningProperty());
+		enviarButton.disableProperty().bind(envio.runningProperty());
 		
 		enviarButton.disableProperty().addListener((o, ov, nv) -> {
 			if(nv)
@@ -133,7 +133,7 @@ public class EnviarEmailController implements Initializable {
 				enviarButton.contentDisplayProperty().set(ContentDisplay.TEXT_ONLY);
 		});
 		
-		new Thread(task).start();
+		new Thread(envio).start();
 			
 	}
 	
